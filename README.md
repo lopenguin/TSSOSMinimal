@@ -1,7 +1,10 @@
-# TSSOS
+# TSSOSMinimal
+A minimal fork of [TSSOS](https://github.com/wangjie212/TSSOS) meant to make installing easier. Mostly just removes Groebner dependency.
+
+
 TSSOS aims to provide a user-friendly and efficient tool for solving optimization problems with polynomials, which is based on the structured moment-SOS hierarchy. To use TSSOS in Julia, run
 ```Julia
-pkg> add https://github.com/lopeguin/TSSOS
+pkg> add https://github.com/lopeguin/TSSOSMinimal
  ```
 
  | **Documentation** |

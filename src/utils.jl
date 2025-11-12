@@ -290,17 +290,17 @@ function eval(supp::Vector{Vector{Vector{UInt16}}}, coe, z)
     return real(transpose(coe)*[prod(z[item[1]])*conj(prod(z[item[2]])) for item in supp])
 end
 
-function npolys_info(pop, x; nb=0)
-    if nb > 0
-        pop = Groebner.normalform(x[1:nb].^2 .- 1, pop)
-    end
-    coe = Vector{Vector{Union{Number, AffExpr}}}(undef, length(pop))
-    supp = Vector{Matrix{UInt8}}(undef, length(pop))
-    for (k, p) in enumerate(pop)
-        supp[k],coe[k] = poly_info(p, x)
-    end
-    return supp,coe
-end
+# function npolys_info(pop, x; nb=0)
+#     if nb > 0
+#         pop = Groebner.normalform(x[1:nb].^2 .- 1, pop)
+#     end
+#     coe = Vector{Vector{Union{Number, AffExpr}}}(undef, length(pop))
+#     supp = Vector{Matrix{UInt8}}(undef, length(pop))
+#     for (k, p) in enumerate(pop)
+#         supp[k],coe[k] = poly_info(p, x)
+#     end
+#     return supp,coe
+# end
 
 function poly_info(p, x)
     mons = MP.monomials(p)
@@ -312,28 +312,28 @@ function poly_info(p, x)
     return supp,coe
 end
 
-function polys_info(pop, x; nb=0)
-    n = length(x)
-    if nb > 0
-        pop = Groebner.normalform(x[1:nb].^2 .- 1, pop)
-    end
-    coe = Vector{Vector{Union{Number, AffExpr}}}(undef, length(pop))
-    supp = Vector{Vector{Vector{UInt16}}}(undef, length(pop))
-    for (k, p) in enumerate(pop)
-        mons = MP.monomials(p)
-        coe[k] = MP.coefficients(p)
-        supp[k] = [UInt16[] for i=1:length(mons)]
-        for (i,mon) in enumerate(mons)
-            ind = mon.z .> 0
-            vars = mon.vars[ind]
-            exp = mon.z[ind]
-            for j in eachindex(vars)
-                append!(supp[k][i], ncbfind(x, n, vars[j])*ones(UInt16, exp[j]))
-            end
-        end
-    end
-    return supp,coe
-end
+# function polys_info(pop, x; nb=0)
+#     n = length(x)
+#     if nb > 0
+#         pop = Groebner.normalform(x[1:nb].^2 .- 1, pop)
+#     end
+#     coe = Vector{Vector{Union{Number, AffExpr}}}(undef, length(pop))
+#     supp = Vector{Vector{Vector{UInt16}}}(undef, length(pop))
+#     for (k, p) in enumerate(pop)
+#         mons = MP.monomials(p)
+#         coe[k] = MP.coefficients(p)
+#         supp[k] = [UInt16[] for i=1:length(mons)]
+#         for (i,mon) in enumerate(mons)
+#             ind = mon.z .> 0
+#             vars = mon.vars[ind]
+#             exp = mon.z[ind]
+#             for j in eachindex(vars)
+#                 append!(supp[k][i], ncbfind(x, n, vars[j])*ones(UInt16, exp[j]))
+#             end
+#         end
+#     end
+#     return supp,coe
+# end
 
 function cpolys_info(pop, x; ctype=ComplexF64)
     n = length(x)
@@ -380,17 +380,17 @@ function divide(a, lead, n, llead)
     return any(j->all(i->lead[i,j]<=a[i], 1:n), 1:llead)
 end
 
-function reminder(a, x, gb, n)
-    rem = Groebner.normalform(gb, prod(x.^a), ordering=DegRevLex())
-    mon = MP.monomials(rem)
-    coe = MP.coefficients(rem)
-    lm = length(mon)
-    supp = zeros(UInt8, n, lm)
-    for i = 1:lm, j = 1:n
-        @inbounds supp[j,i] = MP.degree(mon[i], x[j])
-    end
-    return lm,supp,coe
-end
+# function reminder(a, x, gb, n)
+#     rem = Groebner.normalform(gb, prod(x.^a), ordering=DegRevLex())
+#     mon = MP.monomials(rem)
+#     coe = MP.coefficients(rem)
+#     lm = length(mon)
+#     supp = zeros(UInt8, n, lm)
+#     for i = 1:lm, j = 1:n
+#         @inbounds supp[j,i] = MP.degree(mon[i], x[j])
+#     end
+#     return lm,supp,coe
+# end
 
 function sign_type(a::Vector{UInt16})
     st = UInt16[]

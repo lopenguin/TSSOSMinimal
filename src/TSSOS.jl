@@ -9,7 +9,6 @@ using Ipopt
 using LinearAlgebra
 using MetaGraphs
 using SemialgebraicSets
-using Groebner
 using COSMO
 using Dualization
 using Printf
